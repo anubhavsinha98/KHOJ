@@ -9,7 +9,19 @@
 <meta id="2" data-other='{{ found_stats }}'>
 
 <div id="piechart"></div>
-<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+<div id="chartContainer" style="height: 400px; width: 80%;"></div>
+<br>
+<div id="chartContainer1" style="height: 400px; width: 80%;"></div>
+<div id="chartContainer2" style="height: 400px; width: 80%;"></div>
+<div id="chartContainer3" style="height: 400px; width: 80%;"></div>
+<div id="chartContainer4" style="height: 400px; width: 80%;"></div>
+<div id="chartContainer5" style="height: 400px; width: 80%;"></div>
+<div id="chartContainer6" style="height: 400px; width: 80%;"></div>
+<div id="chartContainer7" style="height: 400px; width: 80%;"></div>
+<div id="chartContainer8" style="height: 400px; width: 80%;"></div>
+<div id="chartContainer9" style="height: 400px; width: 80%;"></div>
+<div id="chartContainer10" style="height: 400px; width: 80%;"></div>
+
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </center>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -22,6 +34,7 @@ google.charts.setOnLoadCallback(drawChart);
 var stats = JSON.parse('{{json_string | escapejs}}')
 lost_stats = [['Police Stations', 'Missing Reports']];
 found_stats = [];
+
 for (x in stats['lost_stats'])
 {
   lost_stats.push([x, stats['lost_stats'][x]]);
@@ -64,6 +77,40 @@ var chart = new CanvasJS.Chart("chartContainer", {
 	}]
 });
 chart.render();
+
+var count = 0;
+
+for (x in stats['lost_and_found_relation'])
+{
+	lost_and_found_stats = [];
+	// console.log(x);
+	count++;
+	for( y in stats['lost_and_found_relation'][x])
+	{
+		// console.log(y);
+		// console.log(stats['lost_and_found_relation'][x][y]);
+		var chartContainer = "chartContainer" + count;
+		lost_and_found_stats.push({y: stats['lost_and_found_relation'][x][y], label: y});
+		var chart = new CanvasJS.Chart(chartContainer, {
+			animationEnabled: true,
+			theme: "light2", // "light1", "light2", "dark1", "dark2"
+			title:{
+				text: x
+			},
+			axisY: {
+				title: "No. of Reports"
+			},
+			data: [{        
+				type: "column",  
+				showInLegend: true, 
+				legendMarkerColor: "grey",
+				legendText: "Cities",
+				dataPoints: lost_and_found_stats
+			}]
+		});
+		chart.render();
+	}
+}
 }
 </script>
 
